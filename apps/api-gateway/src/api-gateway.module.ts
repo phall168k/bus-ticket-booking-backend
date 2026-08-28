@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { ModulesModule } from './modules/modules.module';
+import { HealthModule } from './health/health.module';
 
 @Module({
   imports: [
@@ -9,6 +10,7 @@ import { ModulesModule } from './modules/modules.module';
       envFilePath: '.env',
     }),
     ModulesModule,
+    HealthModule,
   ],
   controllers: [],
   providers: [],
