@@ -27,6 +27,15 @@
       "compilerOptions": {
         "tsConfigPath": "apps/auth-service/tsconfig.app.json"
       }
+    },
+    "trip-service": {
+      "type": "application",
+      "root": "apps/trip-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/trip-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/trip-service/tsconfig.app.json"
+      }
     }
   }
 }
