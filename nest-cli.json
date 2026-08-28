@@ -4,7 +4,7 @@
   "sourceRoot": "apps/bus-ticket-booking-backend/src",
   "compilerOptions": {
     "deleteOutDir": true,
-    "webpack": true,
+    "builder": "rspack",
     "tsConfigPath": "apps/bus-ticket-booking-backend/tsconfig.app.json"
   },
   "monorepo": true,
