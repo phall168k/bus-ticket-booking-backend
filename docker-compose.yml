@@ -1,0 +1,159 @@
+services:
+
+# ==================
+# Databases
+# ==================
+  # Auth Database
+  postgres_auth:
+    image: postgres:16-alpine
+    container_name: auth_db
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_AUTH_NAME}
+    ports:
+      - '${DB_AUTH_PORT}:5432'
+    volumes:
+      - postgres_auth_data:/var/lib/postgresql/data
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U ${DB_USERNAME} -d ${DB_AUTH_NAME}"
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - backend-network
+    restart: unless-stopped
+
+  # Trip Database
+  postgres_trip:
+    image: postgres:16-alpine
+    container_name: trip_db
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_TRIP_NAME}
+    ports:
+      - '${DB_TRIP_PORT}:5432'
+    volumes:
+      - postgres_trip_data:/var/lib/postgresql/data
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U ${DB_USERNAME} -d ${DB_TRIP_NAME}"
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - backend-network
+    restart: unless-stopped
+
+  # Booking Database
+  postgres-booking:
+    image: postgres:16-alpine
+    container_name: booking_db
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_BOOKING_NAME}
+    ports:
+      - '${DB_BOOKING_PORT}:5432'
+    volumes:
+      - postgres_booking_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [
+        "CMD-SHELL",
+        "pg_isready -U ${DB_USERNAME} -d ${DB_BOOKING_NAME}"
+      ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - backend-network
+    restart: unless-stopped
+  
+  # Payment Database
+  postgres-payment:
+    image: postgres:16-alpine
+    container_name: payment_db
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_PAYMENT_NAME}
+    ports:
+      - '${DB_PAYMENT_PORT}:5432'
+    volumes:
+      - postgres_payment_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [
+        "CMD-SHELL",
+        "pg_isready -U ${DB_USERNAME} -d ${DB_PAYMENT_NAME}"
+      ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - backend-network
+    restart: unless-stopped
+
+  # Notification Database
+  postgres-notification:
+    image: postgres:16-alpine
+    container_name: notification_db
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NOTIFICATION_NAME}
+    ports:
+      - '${DB_NOTIFICATION_PORT}:5432'
+    volumes:
+      - postgres_notification_data:/var/lib/postgresql/data
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U ${DB_USERNAME} -d ${DB_NOTIFICATION_NAME}"
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - backend-network
+    restart: unless-stopped
+
+# ==================
+# Volumes
+# ==================
+volumes:
+  postgres_auth_data:
+  postgres_trip_data:
+  postgres_booking_data:
+  postgres_payment_data:
+  postgres_notification_data:
+
+# ==================
+# Networks
+# ==================
+networks:
+  backend-network:
+    driver: bridge
