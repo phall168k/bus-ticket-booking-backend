@@ -140,6 +140,37 @@ services:
     networks:
       - backend-network
     restart: unless-stopped
+  
+# ================
+# RabbitMQ Broker
+# ================
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    env_file:
+      - .env
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USERNAME}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD}
+    ports:
+      - '${RABBITMQ_PORT}:5672'
+      - '${RABBITMQ_MANAGEMENT_PORT}:15672'
+    healthcheck:
+      test:
+        [
+          'CMD',
+          'rabbitmq-diagnostics',
+          '-q',
+          'ping',
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+    volumes:
+      - rabbitmq_bus_ticket_booking_data:/var/lib/rabbitmq
+    networks:
+      - backend-network
 
 # ==================
 # Volumes
@@ -150,6 +181,7 @@ volumes:
   postgres_booking_data:
   postgres_payment_data:
   postgres_notification_data:
+  rabbitmq_bus_ticket_booking_data:
 
 # ==================
 # Networks
